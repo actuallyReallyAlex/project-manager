@@ -1,0 +1,29 @@
+{
+  "name": "project-manager",
+  "version": "0.1.0",
+  "description": "A tool to help you with your projects.",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "rimraf build && tsc",
+    "start": "node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlee-dev/project-manager.git"
+  },
+  "author": "Alex Lee (www.alexlee.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexlee-dev/project-manager/issues"
+  },
+  "homepage": "https://github.com/alexlee-dev/project-manager#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.3"
+  }
+}
