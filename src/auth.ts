@@ -1,6 +1,33 @@
+import fse from "fs-extra";
+import path from "path";
+
 import { getData, isError } from "./util";
 
 import { AuthenticationCredentials, ErrorInfo, GitHubOauthStep1Response, GitHubOauthStep3Error, GitHubOauthStep3Response } from "./types";
+
+const authPath = path.join(__dirname, "../auth.json");
+
+export const authenticate = async (): Promise<AuthenticationCredentials | void> => {
+  const existingAuthExists = await fse.pathExists(authPath);
+  let existingAuth: AuthenticationCredentials | null = null;
+
+  if (!existingAuthExists) {
+    const authenticationResult = await authenticateUser();
+
+    if (isError(authenticationResult)) {
+      throw new Error("Authentication Error!");
+    }
+
+    existingAuth = authenticationResult;
+
+    await fse.writeJSON(authPath, existingAuth, { spaces: 2 });
+
+    return existingAuth;
+  } else {
+    console.log("Existing authentication found.");
+    existingAuth = await fse.readJSON(authPath);
+  }
+};
 
 export const authenticateUser = async (): Promise<AuthenticationCredentials | ErrorInfo> => {
   try {
