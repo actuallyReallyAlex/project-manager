@@ -7,10 +7,8 @@ import { AuthenticationCredentials, ErrorInfo, GitHubOauthStep1Response, GitHubO
 
 const authPath = path.join(__dirname, "../auth.json");
 
-export const authenticate = async (): Promise<AuthenticationCredentials | void> => {
+export const authenticate = async (): Promise<AuthenticationCredentials> => {
   const existingAuthExists = await fse.pathExists(authPath);
-  let existingAuth: AuthenticationCredentials | null = null;
-
   if (!existingAuthExists) {
     const authenticationResult = await authenticateUser();
 
@@ -18,14 +16,14 @@ export const authenticate = async (): Promise<AuthenticationCredentials | void> 
       throw new Error("Authentication Error!");
     }
 
-    existingAuth = authenticationResult;
+    const auth = authenticationResult;
 
-    await fse.writeJSON(authPath, existingAuth, { spaces: 2 });
-
-    return existingAuth;
+    await fse.writeJSON(authPath, auth, { spaces: 2 });
+    return auth;
   } else {
     console.log("Existing authentication found.");
-    existingAuth = await fse.readJSON(authPath);
+    const auth = await fse.readJSON(authPath);
+    return auth;
   }
 };
 
